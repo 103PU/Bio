@@ -1,0 +1,1127 @@
+/* ================= VARIABLES ================= */
+:root {
+    --bg-dark: #050505;
+    --card-bg: #111111;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-sub: #a0a0a0;
+
+    /* Brand Colors */
+    --color-tiktok: #00f2ea;
+    --color-tiktok-2: #ff0050;
+    --color-youtube: #ff0000;
+    --color-discord: #5865F2;
+    --color-success: #23a559;
+    --color-val: #ff4655;
+    --color-roblox: #eff0f1;
+    --color-zing: #ff8c00;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    overflow-x: hidden;
+    position: relative;
+    zoom: 90%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ================= BACKGROUND SYSTEM ================= */
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+    overflow: hidden;
+    pointer-events: none;
+    /* QUAN TRỌNG: Chặn click vào video */
+    user-select: none;
+}
+
+.bg-video iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    /* FIX LỖI 1: Scale 1.35 để ẩn title và controls ra khỏi màn hình */
+    transform: translate(-50%, -50%) scale(1.35);
+    pointer-events: none;
+    min-width: 177.77vh;
+    min-height: 56.25vw;
+}
+
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: -4;
+    pointer-events: none;
+}
+
+.bg-text-effect {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 25vw;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.8));
+    z-index: -2;
+    pointer-events: none;
+    user-select: none;
+    animation: textFloat 12s ease-in-out infinite alternate;
+}
+
+@keyframes textFloat {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        transform: translate(-50%, -45%) scale(1.05);
+    }
+}
+
+.bg-gradient {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(112, 0, 255, 0.15) 0%, rgba(0, 0, 0, 0) 65%);
+    z-index: -3;
+    animation: spinBG 40s linear infinite;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@keyframes spinBG {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.bg-particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ================= LAYOUT ================= */
+.main-wrapper {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+    align-items: stretch;
+}
+
+/* ================= CARD BASE STYLE (FIXED JITTER) ================= */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 26px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    text-decoration: none;
+    color: var(--text-main);
+    position: relative;
+    overflow: hidden;
+
+    /* Shadow */
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        0 10px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    /* FIX LỖI 2: Tối ưu render để không bị nháy khi scroll */
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+
+    z-index: 0;
+}
+
+.card.in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.card:active {
+    transform: scale(0.96) !important;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: transform 0.1s;
+}
+
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-5px) scale(1.02);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        z-index: 10;
+    }
+}
+
+.card__content {
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 5;
+}
+
+/* ================= CARDS CONFIG ================= */
+
+/* --- PROFILE --- */
+.card--profile {
+    grid-column: span 2;
+    padding: 10px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.4));
+}
+
+.shimmer-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 5s infinite linear;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.card--profile .card__content {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.profile-img-box {
+    position: relative;
+    width: 85px;
+    height: 85px;
+    flex-shrink: 0;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 18px;
+    height: 18px;
+    background: var(--color-success);
+    border-radius: 50%;
+    border: 3px solid var(--bg-dark);
+    box-shadow: 0 0 10px var(--color-success);
+}
+
+.profile-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-info h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.2;
+    margin: 0 0 5px 0;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.profile-tag {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    margin-top: 4px;
+}
+
+/* --- TIKTOK --- */
+.card--tiktok {
+    grid-column: span 2;
+    min-height: 180px;
+    background: #0a0a0a;
+    border: none;
+    overflow: hidden;
+}
+
+/* ================= TIKTOK CARD UPDATE (LOGO LAYOUT) ================= */
+
+/* Layout ngang cho phần body */
+.tiktok-body-layout {
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: flex-start;
+    /* Đẩy chữ và ảnh ra 2 đầu */
+    gap: 15px;
+    /* Khoảng cách giữa chữ và ảnh */
+    width: 100%;
+}
+
+/* Nhóm text (h3 và p) */
+.tiktok-text-group {
+    flex: 1;
+    /* Chiếm phần lớn không gian */
+    min-width: 0;
+    max-width: 71%;
+    /* Ngăn text bị tràn layout flex */
+}
+
+/* Ghi đè margin cũ để căn chỉnh đẹp hơn */
+.card--tiktok h3 {
+    margin-top: 0;
+    /* Bỏ margin top cũ */
+    margin-bottom: 5px;
+    font-size: 1.6rem;
+    line-height: 1.2;
+}
+
+/* Wrapper bao quanh ảnh logo */
+.tiktok-channel-img {
+    width: 65px;
+    /* Kích thước logo trên PC */
+    height: 65px;
+    flex-shrink: 0;
+    /* Quan trọng: Không cho ảnh bị bóp méo khi co màn hình */
+    border-radius: 50%;
+    /* Bo tròn */
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background: #000;
+    transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng zoom nhẹ logo khi hover vào thẻ cha */
+.card--tiktok:hover .tiktok-channel-img {
+    transform: scale(1.1) rotate(5deg);
+    border-color: var(--color-tiktok);
+}
+
+/* Định dạng ảnh bên trong */
+.tiktok-channel-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cắt ảnh vừa khung tròn */
+}
+
+.animated-border {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, var(--color-tiktok) 300deg, var(--color-tiktok-2) 360deg);
+    animation: border-rotate 6s linear infinite;
+    z-index: 0;
+}
+
+.card--tiktok::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+    border-radius: 24px;
+    z-index: 0;
+}
+
+@keyframes border-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.card--tiktok .card__content {
+    z-index: 2;
+}
+
+.card__bg-icon {
+    position: absolute;
+    right: -20px;
+    bottom: -40px;
+    font-size: 11rem;
+    opacity: 0.05;
+    transform: rotate(-15deg);
+    z-index: 1;
+}
+
+.card__badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card__icon {
+    font-size: 1.6rem;
+}
+
+.card--tiktok h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.card__arrow {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    font-size: 1.5rem;
+    transform: translateX(-10px);
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.card--tiktok:active .card__arrow {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* --- SQUARE CARDS (NEON) --- */
+.card--square {
+    height: 100%;
+    aspect-ratio: 1/1;
+    background: transparent;
+    border: none;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    --card-color: #ffffff;
+}
+
+.rotate-layer {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent 0deg, transparent 240deg, var(--card-color) 320deg, transparent 360deg);
+    animation: rotate-border 6s linear infinite;
+    z-index: -2;
+}
+
+.mask-layer {
+    position: absolute;
+    inset: 2px;
+    background: var(--card-bg);
+    border-radius: 22px;
+    z-index: -1;
+}
+
+@keyframes rotate-border {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.center-content {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+.icon-wrapper {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+}
+
+.card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.card-sub {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+}
+
+.card--youtube-neon {
+    --card-color: var(--color-youtube);
+}
+
+.card--youtube-neon .rotate-layer {
+    animation-duration: 5s;
+}
+
+.card--youtube-neon i {
+    color: var(--color-youtube);
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.icon-pulse {
+    animation: pulse-red 2s infinite;
+}
+
+.card--discord {
+    --card-color: var(--color-discord);
+}
+
+.card--discord .rotate-layer {
+    animation-duration: 7s;
+}
+
+.card--discord i {
+    color: var(--color-discord);
+    text-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+}
+
+.online-dot {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 12px;
+    height: 12px;
+    background: var(--color-success);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--color-success);
+    animation: blink 2s infinite;
+}
+
+.card--roblox {
+    --card-color: var(--color-roblox);
+}
+
+.card--roblox .rotate-layer {
+    animation-duration: 8s;
+}
+
+.card--roblox svg {
+    width: 60px;
+    height: 60px;
+    color: var(--color-roblox);
+    filter: drop-shadow(0 4px 0 #000);
+}
+
+.icon-bounce-block {
+    animation: bounce-block 3s infinite;
+}
+
+.card--zingspeed {
+    --card-color: var(--color-zing);
+}
+
+.card--zingspeed .rotate-layer {
+    animation-duration: 5.5s;
+}
+
+.game-logo-img {
+    width: 90px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.5));
+}
+
+.other-logo-img {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.5));
+}
+
+.speed-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 20px, rgba(255, 140, 0, 0.05) 20px, rgba(0, 168, 255, 0.05) 40px);
+    opacity: 0.6;
+    transform: skewX(-20deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- VALORANT --- */
+.card--valorant {
+    grid-column: span 2;
+    min-height: 110px;
+    background: linear-gradient(90deg, #0f0f0f 0%, #1a0506 100%);
+    overflow: hidden;
+    animation: border-glitch 4s infinite;
+    border: 1px solid rgba(255, 70, 85, 0.2);
+}
+
+@keyframes border-glitch {
+
+    0%,
+    95% {
+        border-color: rgba(255, 70, 85, 0.2);
+    }
+
+    96%,
+    100% {
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+.card__bg-glow-val {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 80% 50%, rgba(255, 70, 85, 0.2) 0%, transparent 70%);
+}
+
+.row-content {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.valorant-logo-box {
+    width: 55px;
+    height: 55px;
+    color: var(--color-val);
+    filter: drop-shadow(0 0 8px rgba(255, 70, 85, 0.6));
+}
+
+.val-svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.text-box h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.val-arrow {
+    margin-left: auto;
+    color: var(--color-val);
+    font-size: 1.3rem;
+    opacity: 0.8;
+}
+
+/* Beacons */
+.card--wide {
+    grid-column: span 2;
+    min-height: 90px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.icon-box-small {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--text-sub);
+    overflow: hidden;
+}
+
+.action-box {
+    margin-left: auto;
+    color: var(--text-sub);
+    font-size: 1.1rem;
+}
+
+/* Titles */
+.section-title {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.section-title span {
+    white-space: nowrap;
+}
+
+.section-title .line {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.title-social {
+    color: var(--color-tiktok);
+}
+
+.title-social .line {
+    background: linear-gradient(90deg, var(--color-tiktok), transparent);
+}
+
+.title-social span {
+    animation: type-blink 2s infinite;
+    border-right: 3px solid var(--color-tiktok);
+    padding-right: 5px;
+}
+
+@keyframes type-blink {
+
+    0%,
+    100% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--color-tiktok);
+    }
+}
+
+.title-game {
+    color: var(--color-val);
+}
+
+.title-game .line {
+    background: linear-gradient(90deg, var(--color-val), transparent);
+}
+
+.title-game span {
+    animation: text-flicker 3s infinite;
+    text-shadow: 0 0 5px var(--color-val);
+}
+
+@keyframes text-flicker {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    92% {
+        opacity: 1;
+    }
+
+    93% {
+        opacity: 0.5;
+        transform: skewX(10deg);
+    }
+
+    94% {
+        opacity: 1;
+        transform: skewX(0deg);
+    }
+
+    96% {
+        opacity: 0.5;
+    }
+
+    97% {
+        opacity: 1;
+    }
+}
+
+.title-others {
+    color: #a0a0a0;
+}
+
+.title-others .line {
+    background: linear-gradient(90deg, #a0a0a0, transparent);
+}
+
+.title-others span {
+    animation: text-spacing 4s ease-in-out infinite alternate;
+}
+
+@keyframes text-spacing {
+    0% {
+        letter-spacing: 1px;
+        opacity: 0.7;
+    }
+
+    100% {
+        letter-spacing: 3px;
+        opacity: 1;
+        text-shadow: 0 0 8px white;
+    }
+}
+
+/* Keyframes */
+@keyframes pulse-red {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes bounce-block {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(3deg);
+    }
+}
+
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 #ff00c1;
+    clip-path: inset(40% 0 61% 0);
+    animation: glitch-anim 4s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 #00fff9;
+    clip-path: inset(20% 0 80% 0);
+    animation: glitch-anim-2 4s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip-path: inset(40% 0 61% 0);
+    }
+
+    20% {
+        clip-path: inset(92% 0 1% 0);
+    }
+
+    40% {
+        clip-path: inset(43% 0 1% 0);
+    }
+
+    60% {
+        clip-path: inset(25% 0 58% 0);
+    }
+
+    80% {
+        clip-path: inset(54% 0 7% 0);
+    }
+
+    100% {
+        clip-path: inset(58% 0 43% 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip-path: inset(20% 0 80% 0);
+    }
+
+    20% {
+        clip-path: inset(50% 0 20% 0);
+    }
+
+    40% {
+        clip-path: inset(10% 0 40% 0);
+    }
+
+    60% {
+        clip-path: inset(80% 0 5% 0);
+    }
+
+    80% {
+        clip-path: inset(5% 0 80% 0);
+    }
+
+    100% {
+        clip-path: inset(40% 0 10% 0);
+    }
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    opacity: 0.6;
+}
+
+.footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.verify-icon {
+    color: #00d2ff;
+}
+
+@media (max-width: 600px) {
+    .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .card--square {
+        grid-column: span 1;
+        height: 100%;
+        min-height: 160px;
+    }
+
+    .profile-info h1 {
+        font-size: 1.8rem;
+    }
+
+    .card--tiktok h3 {
+        font-size: 1.5rem;
+    }
+
+    .bg-text-effect {
+        font-size: 15vw;
+        opacity: 0.2;
+    }
+
+    .card:active {
+        transform: scale(0.98);
+    }
+
+    .section-title {
+        margin-top: 20px;
+        font-size: 0.8rem;
+    }
+
+    /* Mobile Responsive cho Volume */
+
+    .volume-container {
+        bottom: 20px;
+        left: 20px;
+        padding: 10px 15px;
+    }
+
+    .volume-slider {
+        width: 80px;
+    }
+
+    /* Trên mobile, giảm kích thước logo một chút cho cân đối */
+    .tiktok-channel-img {
+        width: 55px;
+        height: 55px;
+    }
+
+    /* Giảm cỡ chữ tiêu đề tiktok trên mobile để không bị xuống dòng xấu */
+    .card--tiktok h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ================= BACKGROUND SYSTEM ================= */
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Style cho iframe được tạo bởi API */
+.bg-video iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    /* Scale to để ẩn các nút điều khiển YouTube */
+    transform: translate(-50%, -50%) scale(1.35);
+    pointer-events: none;
+    min-width: 177.77vh;
+    min-height: 56.25vw;
+}
+
+/* ================= VOLUME CONTROL UI (MỚI) ================= */
+.volume-container {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 100;
+    /* Nổi lên trên tất cả */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    opacity: 1;
+    animation: fadeInUp 1s 1s forwards;
+    /* Hiện ra sau 1s */
+}
+
+.volume-container:hover {
+    background: linear-gradient(-45deg, #e925d936 0%, #0400ff2a 100%);
+}
+
+.volume-icon {
+    color: #fff;
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+/* Style thanh trượt (Range Input) */
+.volume-slider {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Màu thanh trượt (Progress Bar) */
+.volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    /* Gradient động dựa trên giá trị (sẽ được JS cập nhật) */
+    background: linear-gradient(90deg, #3e3d3f var(--vol-percent, 0%), rgba(199, 102, 191, 0.2) var(--vol-percent, 0%));
+    border-radius: 2px;
+}
+
+/* Nút kéo (Thumb) */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(158, 86, 252, 0.5);
+    margin-top: -5px;
+    /* Căn giữa */
+    transition: transform 0.4s;
+}
+
+.volume-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.1);
+    background: var(--color-tiktok);
+}
