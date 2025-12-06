@@ -1,220 +1,178 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>103_PU | Content Creator</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>103_PU | Gaming Creator</title>
+    
+    <link rel="stylesheet" href="./css/style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
 
-        <link rel="stylesheet" href="./css/style.css">
+    <div class="bg-video">
+        <div id="yt-player"></div>
+    </div>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=Space+Mono:wght@700&display=swap"
-            rel="stylesheet">
+    <div class="bg-overlay"></div>
+    <div class="bg-text-effect">103_PU</div>
+    <div class="bg-particles"></div>
+    <div class="bg-gradient"></div>
 
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </head>
-    <body>
+    <main class="main-wrapper">
+        <div class="bento-grid">
 
-        <div class="bg-video">
-            <div id="yt-player"></div>
-        </div>
-
-        <div class="bg-overlay"></div>
-
-        <div class="bg-text-effect">103_PU</div>
-
-        <div class="bg-particles"></div>
-        <div class="bg-gradient"></div>
-
-        <main class="main-wrapper">
-            <div class="bento-grid">
-
-                <div class="card card--profile js-tilt">
-                    <div class="shimmer-layer"></div>
-                    <div class="card__content">
-                        <div class="profile-img-box">
-                            <img src="./assets/avatar.jpg"
-                                onerror="this.src='https://images.unsplash.com/photo-1620247407367-b364392d2906?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
-                                alt="103_PU" class="profile-img">
-                            <div class="status-indicator"></div>
-                        </div>
-                        <div class="profile-info">
-                            <h1 class="glitch-text"
-                                data-text="103_PU">103_PU</h1>
-                            <p class="profile-tag">Gaming Creator & Streamer</p>
-                        </div>
+            <div class="card card--profile js-tilt">
+                <div class="shimmer-layer"></div>
+                <div class="card__content">
+                    <div class="profile-img-box">
+                        <img src="./assets/avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1620247407367-b364392d2906?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'" alt="103_PU" class="profile-img">
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="glitch-text" data-text="103_PU">103_PU</h1>
+                        <p class="profile-tag">Gaming Creator & Streamer</p>
                     </div>
                 </div>
-
-                <div class="section-title title-social">
-                    <span>/// SOCIAL MEDIA</span>
-                    <div class="line"></div>
-                </div>
-
-                <a href="https://www.tiktok.com/@103_pu_" target="_blank"
-                    class="card card--tiktok js-tilt">
-                    <div class="animated-border"></div>
-                    <div class="card__bg-icon"><i
-                            class="fa-brands fa-tiktok"></i></div>
-
-                    <div class="card__content">
-                        <div class="card__header">
-                            <i class="fa-brands fa-tiktok card__icon"></i>
-                            <span class="card__badge">Main Channel</span>
-                        </div>
-
-                        <div class="card__body tiktok-body-layout">
-                            <div class="tiktok-text-group">
-                                <h3>TikTok Channel</h3>
-                                <p>Highlights & Funny Moments</p>
-                            </div>
-
-                            <div class="tiktok-channel-img">
-                                <img src="https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/6b019e6b8d5c478b318b823587458e5d~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=f8f77826&x-expires=1765220400&x-signature=%2FX%2FqxOSJEw1hiEwjFHn5iFemMJc%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=my3"
-                                    onerror="this.src='https://images.unsplash.com/photo-1611605698383-3b8c53327d6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'"
-                                    alt="TikTok Logo">
-                            </div>
-                        </div>
-
-                        <div class="card__arrow"><i
-                                class="fa-solid fa-arrow-right-long"></i></div>
-                    </div>
-                </a>
-
-                <a
-                    href="https://www.youtube.com/@103_PU-tiktoker?sub_confirmation=1"
-                    target="_blank"
-                    class="card card--square card--youtube-neon js-tilt">
-                    <div class="rotate-layer"></div>
-                    <div class="mask-layer"></div>
-                    <div class="card__content center-content">
-                        <div class="icon-wrapper icon-pulse">
-                            <i class="fa-brands fa-youtube"></i>
-                        </div>
-                        <h3 class="card-title">YouTube</h3>
-                        <p class="card-sub">Subscribe For Me</p>
-                    </div>
-                </a>
-
-                <a href="https://discord.com/invite/k3yUgsYVcB" target="_blank"
-                    class="card card--square card--discord js-tilt">
-                    <div class="rotate-layer"></div>
-                    <div class="mask-layer"></div>
-                    <div class="card__content center-content">
-                        <div class="icon-wrapper icon-float">
-                            <i class="fa-brands fa-discord"></i>
-                        </div>
-                        <h3 class="card-title">Discord</h3>
-                        <p class="card-sub">Join My Server</p>
-                        <div class="online-dot"></div>
-                    </div>
-                </a>
-
-                <div class="section-title title-game">
-                    <span>[ GAME ZONE ]</span>
-                    <div class="line"></div>
-                </div>
-
-                <a
-                    href="https://valorant.vnggames.com/vi-vn/top-1-fps-phong-may/"
-                    target="_blank"
-                    class="card card--wide card--valorant js-tilt">
-                    <div class="card__bg-glow-val"></div>
-                    <div class="card__content row-content">
-                        <div class="valorant-logo-box">
-                            <svg class="val-svg" viewBox="0 0 100 100"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M99.25 0H67.5L50 35.13 32.5 0H0.75L50 100L99.25 0Z" />
-                            </svg>
-                        </div>
-                        <div class="text-box">
-                            <h3 style="font-family: 'Space Mono'">VALORANT</h3>
-                            <p>VNG Games</p>
-                        </div>
-                        <div class="action-box val-arrow"><i
-                                class="fa-solid fa-crosshairs"></i></div>
-                    </div>
-                </a>
-
-                <a href="https://www.roblox.com/Login" target="_blank"
-                    class="card card--square card--roblox js-tilt">
-                    <div class="rotate-layer"></div>
-                    <div class="mask-layer"></div>
-                    <div class="card__content center-content">
-                        <div class="icon-wrapper icon-bounce-block">
-                            <svg width="50" height="50" viewBox="0 0 32 32"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M7.7 3.5L23.1 7.7L18.9 23.1L3.5 18.9L7.7 3.5Z M11.6 10.1L10.1 15.7L15.7 17.2L17.2 11.6L11.6 10.1Z" />
-                            </svg>
-                        </div>
-                        <h3 class="card-title">Roblox</h3>
-                        <p class="card-sub">Time For Creations</p>
-                    </div>
-                </a>
-
-                <a href="https://zingspeedm.vnggames.com/" target="_blank"
-                    class="card card--square card--zingspeed js-tilt">
-                    <div class="rotate-layer"></div>
-                    <div class="mask-layer"></div>
-                    <div class="speed-lines"></div>
-                    <div class="card__content center-content"
-                        style="z-index: 3;">
-                        <div style="border-radius: 50%; overflow: hidden;"
-                            class="icon-wrapper icon-drift">
-                            <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdoKRHfiAxxTdbezi1vQkG7ucNCkU7nmwQFw&s"
-                                alt="ZingSpeed Mobile" class="game-logo-img">
-                        </div>
-                        <h3 class="card-title">ZingSpeed</h3>
-                        <p class="card-sub">Let's Drift Together</p>
-                    </div>
-                </a>
-
-                <div class="section-title title-others">
-                    <span>:: OTHERS ::</span>
-                    <div class="line"></div>
-                </div>
-
-                <a href="https://beacons.ai/103_pu/" target="_blank"
-                    class="card card--wide card--beacons js-tilt">
-                    <div class="card__content row-content">
-                        <div class="icon-box-small"><img
-                                src="data:image/png;base64,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"
-                                alt="Beaconsai" class="other-logo-img"></div>
-                        <div class="text-box">
-                            <h3>More Links</h3>
-                            <p>Beacons Bio</p>
-                        </div>
-                        <div class="action-box"><i
-                                class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                </a>
-
             </div>
 
-            <footer class="footer">
-                <p>103_PU Content Creator <i
-                        class="fa-solid fa-certificate verify-icon"></i> |
-                    CHILL</p>
-            </footer>
-
-        </main>
-
-        <div class="volume-container">
-            <div class="volume-icon">
-                <i class="fa-solid fa-volume-xmark" id="vol-icon"></i>
+            <div class="section-title title-social">
+                <span>/// SOCIAL MEDIA</span>
+                <div class="line"></div>
             </div>
-            <input type="range" id="vol-slider" class="volume-slider" min="0"
-                max="100" value="30">
+
+            <a href="https://www.tiktok.com/@103_pu_" target="_blank" class="card card--tiktok js-tilt">
+                <div class="animated-border"></div>
+                <div class="card__bg-icon"><i class="fa-brands fa-tiktok"></i></div>
+                <div class="card__content">
+                    <div class="card__header">
+                        <i class="fa-brands fa-tiktok card__icon"></i>
+                        <span class="card__badge">Main Channel</span>
+                    </div>
+                    <div class="card__body tiktok-body-layout">
+                        <div class="tiktok-text-group">
+                            <h3>TikTok Channel</h3>
+                            <p>Highlights & Funny Moments</p>
+                        </div>
+                        <div class="tiktok-channel-img">
+                            <img src="./assets/avatar.jpg" onerror="this.src='https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/6b019e6b8d5c478b318b823587458e5d~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=f8f77826&x-expires=1765220400&x-signature=%2FX%2FqxOSJEw1hiEwjFHn5iFemMJc%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=my3'" alt="TikTok Logo">
+                        </div>
+                    </div>
+                    <div class="card__arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/@103_PU-tiktoker?sub_confirmation=1" target="_blank" class="card card--square card--youtube-neon js-tilt">
+                <div class="rotate-layer"></div>
+                <div class="mask-layer"></div>
+                <div class="card__content center-content">
+                    <div class="icon-wrapper icon-pulse">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h3 class="card-title">YouTube</h3>
+                    <p class="card-sub">Subscribe For Me</p>
+                </div>
+            </a>
+
+            <a href="https://discord.com/invite/k3yUgsYVcB" target="_blank" class="card card--square card--discord js-tilt">
+                <div class="rotate-layer"></div>
+                <div class="mask-layer"></div>
+                <div class="card__content center-content">
+                    <div class="icon-wrapper icon-float">
+                        <i class="fa-brands fa-discord"></i>
+                    </div>
+                    <h3 class="card-title">Discord</h3>
+                    <p class="card-sub">Join My Server</p>
+                    <div class="online-dot"></div>
+                </div>
+            </a>
+
+            <div class="section-title title-game">
+                <span>[ GAME ZONE ]</span>
+                <div class="line"></div>
+            </div>
+
+            <a href="https://valorant.vnggames.com/vi-vn/top-1-fps-phong-may/" target="_blank" class="card card--wide card--valorant js-tilt">
+                <div class="card__bg-glow-val"></div>
+                <div class="card__content row-content">
+                    <div class="valorant-logo-box">
+                        <svg class="val-svg" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M99.25 0H67.5L50 35.13 32.5 0H0.75L50 100L99.25 0Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-box">
+                        <h3 style="font-family: 'Space Mono'">VALORANT</h3>
+                        <p>VNG Games</p>
+                    </div>
+                    <div class="action-box val-arrow"><i class="fa-solid fa-crosshairs"></i></div>
+                </div>
+            </a>
+
+            <a href="https://www.roblox.com/Login" target="_blank" class="card card--square card--roblox js-tilt">
+                <div class="rotate-layer"></div>
+                <div class="mask-layer"></div>
+                <div class="card__content center-content">
+                    <div class="icon-wrapper icon-bounce-block">
+                        <svg width="50" height="50" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.7 3.5L23.1 7.7L18.9 23.1L3.5 18.9L7.7 3.5Z M11.6 10.1L10.1 15.7L15.7 17.2L17.2 11.6L11.6 10.1Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Roblox</h3>
+                    <p class="card-sub">Time For Creations</p>
+                </div>
+            </a>
+
+            <a href="https://zingspeedm.vnggames.com/" target="_blank" class="card card--square card--zingspeed js-tilt">
+                <div class="rotate-layer"></div>
+                <div class="mask-layer"></div>
+                <div class="speed-lines"></div>
+                <div class="card__content center-content" style="z-index: 3;">
+                    <div style="border-radius: 50%; overflow: hidden;" class="icon-wrapper icon-drift">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdoKRHfiAxxTdbezi1vQkG7ucNCkU7nmwQFw&s" alt="ZingSpeed Mobile" class="game-logo-img">
+                    </div>
+                    <h3 class="card-title">ZingSpeed</h3>
+                    <p class="card-sub">Let's Drift Together</p>
+                </div>
+            </a>
+
+            <div class="section-title title-others">
+                <span>:: OTHERS ::</span>
+                <div class="line"></div>
+            </div>
+
+            <a href="https://beacons.ai/103_pu/" target="_blank" class="card card--wide card--beacons js-tilt">
+                <div class="card__content row-content">
+                    <div class="icon-box-small">
+                        <img src="https://beacons.ai/favicon.ico" onerror="this.src='data:image/svg+xml;base64,...'" alt="Beacons" class="other-logo-img">
+                    </div>
+                    <div class="text-box">
+                        <h3>More Links</h3>
+                        <p>Beacons Bio</p>
+                    </div>
+                    <div class="action-box"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </div>
+            </a>
+
         </div>
 
-        <script src="./js/main.js"></script>
-    </body>
+        <footer class="footer">
+            <p>103_PU Content Creator <i class="fa-solid fa-certificate verify-icon"></i> | CHILL</p>
+        </footer>
+
+    </main>
+
+    <div class="volume-container">
+        <div class="volume-icon">
+            <i class="fa-solid fa-volume-xmark" id="vol-icon"></i>
+        </div>
+        <input type="range" id="vol-slider" class="volume-slider" min="0" max="100" value="0">
+    </div>
+
+    <script src="./js/main.js"></script>
+</body>
 </html>

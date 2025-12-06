@@ -7,7 +7,7 @@
     --text-sub: #a0a0a0;
 
     /* Brand Colors */
-    --color-tiktok: #00f2ea;
+    --color-tiktok: #a60771e4;
     --color-tiktok-2: #ff0050;
     --color-youtube: #ff0000;
     --color-discord: #5865F2;
@@ -38,7 +38,7 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ================= BACKGROUND SYSTEM ================= */
+/* ================= BACKGROUND SYSTEM (FIXED YOUTUBE LOGO) ================= */
 .bg-video {
     position: fixed;
     top: 0;
@@ -48,7 +48,6 @@ body {
     z-index: -5;
     overflow: hidden;
     pointer-events: none;
-    /* QUAN TRỌNG: Chặn click vào video */
     user-select: none;
 }
 
@@ -58,8 +57,8 @@ body {
     left: 50%;
     width: 100vw;
     height: 100vh;
-    /* FIX LỖI 1: Scale 1.35 để ẩn title và controls ra khỏi màn hình */
-    transform: translate(-50%, -50%) scale(1.35);
+    /* FIX: Tăng scale lên 1.6 để đẩy logo và title ra khỏi khung nhìn */
+    transform: translate(-50%, -50%) scale(1.6);
     pointer-events: none;
     min-width: 177.77vh;
     min-height: 56.25vw;
@@ -149,7 +148,7 @@ body {
     align-items: stretch;
 }
 
-/* ================= CARD BASE STYLE (FIXED JITTER) ================= */
+/* ================= CARD STYLE ================= */
 .card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -160,20 +159,12 @@ body {
     color: var(--text-main);
     position: relative;
     overflow: hidden;
-
-    /* Shadow */
-    box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.3),
-        0 10px 20px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-
-    /* FIX LỖI 2: Tối ưu render để không bị nháy khi scroll */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     opacity: 0;
     transform: translateY(50px) scale(0.95);
     transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
     will-change: transform, opacity;
     backface-visibility: hidden;
-
     z-index: 0;
 }
 
@@ -208,9 +199,111 @@ body {
     z-index: 5;
 }
 
-/* ================= CARDS CONFIG ================= */
+/* ================= VOLUME CONTROL UI (UPDATED MOBILE) ================= */
+.volume-container {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 1s 1s forwards;
+}
 
-/* --- PROFILE --- */
+.volume-container:hover {
+    background: linear-gradient(-45deg, #333 0%, #222 100%);
+    border-color: var(--color-tiktok);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.volume-icon {
+    color: #fff;
+    width: 24px;
+    text-align: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.volume-icon:active {
+    transform: scale(0.9);
+}
+
+.volume-slider {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: linear-gradient(90deg, var(--color-tiktok) var(--vol-percent, 0%), rgba(255, 255, 255, 0.2) var(--vol-percent, 0%));
+    border-radius: 2px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px var(--color-tiktok);
+    margin-top: -5px;
+    transition: transform 0.2s;
+}
+
+.volume-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.3);
+}
+
+/* --- Mobile Fixes --- */
+@media (max-width: 600px) {
+    .volume-container {
+        bottom: 20px;
+        left: 20px;
+        /* Tăng vùng bấm cho mobile */
+        padding: 15px 20px;
+    }
+
+    .volume-icon {
+        /* Icon to hơn */
+        font-size: 1.4rem;
+    }
+
+    .volume-slider {
+        width: 90px;
+    }
+}
+
+/* ================= COMPONENT STYLES ================= */
+/* Profile */
 .card--profile {
     grid-column: span 2;
     padding: 10px;
@@ -299,7 +392,7 @@ body {
     margin-top: 4px;
 }
 
-/* --- TIKTOK --- */
+/* TikTok */
 .card--tiktok {
     grid-column: span 2;
     min-height: 180px;
@@ -308,47 +401,32 @@ body {
     overflow: hidden;
 }
 
-/* ================= TIKTOK CARD UPDATE (LOGO LAYOUT) ================= */
-
-/* Layout ngang cho phần body */
 .tiktok-body-layout {
     display: flex;
     align-items: center;
-    /* Căn giữa theo chiều dọc */
     justify-content: flex-start;
-    /* Đẩy chữ và ảnh ra 2 đầu */
     gap: 15px;
-    /* Khoảng cách giữa chữ và ảnh */
     width: 100%;
 }
 
-/* Nhóm text (h3 và p) */
 .tiktok-text-group {
     flex: 1;
-    /* Chiếm phần lớn không gian */
     min-width: 0;
     max-width: 71%;
-    /* Ngăn text bị tràn layout flex */
 }
 
-/* Ghi đè margin cũ để căn chỉnh đẹp hơn */
 .card--tiktok h3 {
     margin-top: 0;
-    /* Bỏ margin top cũ */
     margin-bottom: 5px;
     font-size: 1.6rem;
     line-height: 1.2;
 }
 
-/* Wrapper bao quanh ảnh logo */
 .tiktok-channel-img {
     width: 65px;
-    /* Kích thước logo trên PC */
     height: 65px;
     flex-shrink: 0;
-    /* Quan trọng: Không cho ảnh bị bóp méo khi co màn hình */
     border-radius: 50%;
-    /* Bo tròn */
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -356,18 +434,15 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Hiệu ứng zoom nhẹ logo khi hover vào thẻ cha */
 .card--tiktok:hover .tiktok-channel-img {
     transform: scale(1.1) rotate(5deg);
     border-color: var(--color-tiktok);
 }
 
-/* Định dạng ảnh bên trong */
 .tiktok-channel-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Cắt ảnh vừa khung tròn */
 }
 
 .animated-border {
@@ -432,12 +507,6 @@ body {
     font-size: 1.6rem;
 }
 
-.card--tiktok h3 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
 .card__arrow {
     position: absolute;
     bottom: 24px;
@@ -453,7 +522,7 @@ body {
     opacity: 1;
 }
 
-/* --- SQUARE CARDS (NEON) --- */
+/* Square Cards */
 .card--square {
     height: 100%;
     aspect-ratio: 1/1;
@@ -620,7 +689,6 @@ body {
     z-index: 1;
 }
 
-/* --- VALORANT --- */
 .card--valorant {
     grid-column: span 2;
     min-height: 110px;
@@ -685,7 +753,6 @@ body {
     opacity: 0.8;
 }
 
-/* Beacons */
 .card--wide {
     grid-column: span 2;
     min-height: 90px;
@@ -711,7 +778,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* Titles */
 .section-title {
     grid-column: span 2;
     display: flex;
@@ -737,7 +803,7 @@ body {
 }
 
 .title-social {
-    color: var(--color-tiktok);
+    color: #00fff9;
 }
 
 .title-social .line {
@@ -830,7 +896,6 @@ body {
     }
 }
 
-/* Keyframes */
 @keyframes pulse-red {
 
     0%,
@@ -948,26 +1013,6 @@ body {
     }
 }
 
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    opacity: 0.6;
-}
-
-.footer p {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-sub);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-.verify-icon {
-    color: #00d2ff;
-}
-
 @media (max-width: 600px) {
     .bento-grid {
         grid-template-columns: 1fr 1fr;
@@ -985,7 +1030,7 @@ body {
     }
 
     .card--tiktok h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .bg-text-effect {
@@ -993,135 +1038,13 @@ body {
         opacity: 0.2;
     }
 
-    .card:active {
-        transform: scale(0.98);
-    }
-
     .section-title {
         margin-top: 20px;
         font-size: 0.8rem;
     }
 
-    /* Mobile Responsive cho Volume */
-
-    .volume-container {
-        bottom: 20px;
-        left: 20px;
-        padding: 10px 15px;
-    }
-
-    .volume-slider {
-        width: 80px;
-    }
-
-    /* Trên mobile, giảm kích thước logo một chút cho cân đối */
     .tiktok-channel-img {
         width: 55px;
         height: 55px;
     }
-
-    /* Giảm cỡ chữ tiêu đề tiktok trên mobile để không bị xuống dòng xấu */
-    .card--tiktok h3 {
-        font-size: 1.4rem;
-    }
-}
-
-/* ================= BACKGROUND SYSTEM ================= */
-.bg-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -5;
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-}
-
-/* Style cho iframe được tạo bởi API */
-.bg-video iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vw;
-    height: 100vh;
-    /* Scale to để ẩn các nút điều khiển YouTube */
-    transform: translate(-50%, -50%) scale(1.35);
-    pointer-events: none;
-    min-width: 177.77vh;
-    min-height: 56.25vw;
-}
-
-/* ================= VOLUME CONTROL UI (MỚI) ================= */
-.volume-container {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    z-index: 100;
-    /* Nổi lên trên tất cả */
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(20, 20, 20, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 12px 20px;
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    opacity: 1;
-    animation: fadeInUp 1s 1s forwards;
-    /* Hiện ra sau 1s */
-}
-
-.volume-container:hover {
-    background: linear-gradient(-45deg, #e925d936 0%, #0400ff2a 100%);
-}
-
-.volume-icon {
-    color: #fff;
-    width: 24px;
-    text-align: center;
-    font-size: 1.1rem;
-    cursor: pointer;
-}
-
-/* Style thanh trượt (Range Input) */
-.volume-slider {
-    width: 100px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-}
-
-/* Màu thanh trượt (Progress Bar) */
-.volume-slider::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    cursor: pointer;
-    /* Gradient động dựa trên giá trị (sẽ được JS cập nhật) */
-    background: linear-gradient(90deg, #3e3d3f var(--vol-percent, 0%), rgba(199, 102, 191, 0.2) var(--vol-percent, 0%));
-    border-radius: 2px;
-}
-
-/* Nút kéo (Thumb) */
-.volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(158, 86, 252, 0.5);
-    margin-top: -5px;
-    /* Căn giữa */
-    transition: transform 0.4s;
-}
-
-.volume-slider:hover::-webkit-slider-thumb {
-    transform: scale(1.1);
-    background: var(--color-tiktok);
 }

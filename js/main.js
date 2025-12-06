@@ -1,5 +1,6 @@
 // --- 1. YOUTUBE VIDEO BACKGROUND API ---
 var player;
+var lastVolume = 30; // Lưu mức âm lượng gần nhất để restore khi unmute
 
 // Hàm này được YouTube API gọi tự động khi tải xong
 function onYouTubeIframeAPIReady() {
@@ -32,6 +33,7 @@ function onPlayerReady(event) {
     // Hàm cập nhật giao diện slider
     const updateSliderUI = (value) => {
         volSlider.style.setProperty('--vol-percent', `${value}%`);
+        volSlider.value = value; // Cập nhật vị trí nút kéo
 
         // Đổi icon theo mức âm lượng
         if (value == 0) {
@@ -43,6 +45,23 @@ function onPlayerReady(event) {
         }
     };
 
+    // --- FIX: LOGIC BẤM ICON ĐỂ MUTE/UNMUTE ---
+    volIcon.addEventListener('click', () => {
+        if (player.isMuted() || volSlider.value == 0) {
+            // Đang tắt -> Bật lại mức cũ (hoặc 30 nếu chưa có)
+            let targetVol = lastVolume > 0 ? lastVolume : 30;
+            player.unMute();
+            player.setVolume(targetVol);
+            updateSliderUI(targetVol);
+        } else {
+            // Đang bật -> Tắt (lưu lại mức hiện tại)
+            lastVolume = volSlider.value;
+            player.mute();
+            player.setVolume(0);
+            updateSliderUI(0);
+        }
+    });
+
     // Sự kiện kéo thanh trượt
     volSlider.addEventListener('input', function () {
         const volume = this.value;
@@ -53,6 +72,9 @@ function onPlayerReady(event) {
         } else if (volume == 0) {
             player.mute();
         }
+
+        // Lưu lại volume nếu khác 0 để dùng cho toggle
+        if (volume > 0) lastVolume = volume;
 
         player.setVolume(volume);
         updateSliderUI(volume);
