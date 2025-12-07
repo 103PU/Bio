@@ -13,10 +13,18 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
 
-    <div class="bg-video">
-        <div id="yt-player"></div>
+<video id="bg-video-player" class="bg-video" autoplay muted loop playsinline>
+        <source src="" type="video/mp4"></video>
+    </video>    
+<body class="is-loading">
+
+    <div id="cinematic-intro">
+        <div class="intro-bg"></div> 
+        <div class="intro-content">
+            <div class="intro-line line-1">WELCOME TO MY UNIVERSE</div>
+            <div class="intro-line line-2">103_PU</div>
+        </div>
     </div>
 
     <div class="bg-overlay"></div>
@@ -132,7 +140,7 @@
                 <div class="mask-layer"></div>
                 <div class="speed-lines"></div>
                 <div class="card__content center-content" style="z-index: 3;">
-                    <div style="border-radius: 50%; overflow: hidden;" class="icon-wrapper icon-drift">
+                    <div class="icon-wrapper icon-drift">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdoKRHfiAxxTdbezi1vQkG7ucNCkU7nmwQFw&s" alt="ZingSpeed Mobile" class="game-logo-img">
                     </div>
                     <h3 class="card-title">ZingSpeed</h3>

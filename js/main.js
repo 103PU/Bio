@@ -1,100 +1,84 @@
-// --- 1. YOUTUBE VIDEO BACKGROUND API ---
-var player;
-var lastVolume = 30; // Lưu mức âm lượng gần nhất để restore khi unmute
+// --- 1. CINEMATIC INTRO LOGIC ---
+function playIntro() {
+    const introOverlay = document.getElementById('cinematic-intro');
+    const body = document.body;
 
-// Hàm này được YouTube API gọi tự động khi tải xong
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('yt-player', {
-        videoId: 'e94hCLHEEsk', // ID Video của bạn
-        playerVars: {
-            'autoplay': 1,
-            'controls': 0,
-            'showinfo': 0,
-            'modestbranding': 1,
-            'loop': 1,
-            'playlist': 'e94hCLHEEsk', // Cần thiết để loop hoạt động
-            'mute': 0,         // Bắt buộc MUTE để autoplay được
-            'playsinline': 1,
-            'rel': 0
-        },
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
+    // Timeline: 
+    // 0s: Line 1 (Welcome) hiện
+    // 1.5s: Line 2 (103_PU) hiện
+    // 4.0s: Intro mờ đi, web chính hiện ra
+
+    setTimeout(() => {
+        introOverlay.classList.add('fade-out');
+        body.classList.remove('is-loading');
+        body.classList.add('loaded');
+    }, 4000);
+
+    setTimeout(() => {
+        introOverlay.style.display = 'none';
+    }, 5000);
 }
 
-function onPlayerReady(event) {
-    event.target.playVideo();
+// Gọi intro
+playIntro();
 
-    // Logic Volume Slider
+
+// --- 2. LOCAL VIDEO CONTROL LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('bg-video-player');
     const volSlider = document.getElementById('vol-slider');
     const volIcon = document.getElementById('vol-icon');
+    let lastVolume = 30; // Mức âm lượng mặc định khi bật tiếng
 
-    // Hàm cập nhật giao diện slider
-    const updateSliderUI = (value) => {
-        volSlider.style.setProperty('--vol-percent', `${value}%`);
-        volSlider.value = value; // Cập nhật vị trí nút kéo
+    // Hàm cập nhật giao diện volume
+    const updateVolUI = (vol) => {
+        volSlider.value = vol;
+        volSlider.style.setProperty('--vol-percent', `${vol}%`);
 
-        // Đổi icon theo mức âm lượng
-        if (value == 0) {
+        // Cập nhật icon
+        if (vol == 0) {
             volIcon.className = 'fa-solid fa-volume-xmark';
-        } else if (value < 50) {
+        } else if (vol < 50) {
             volIcon.className = 'fa-solid fa-volume-low';
         } else {
             volIcon.className = 'fa-solid fa-volume-high';
         }
     };
 
-    // --- FIX: LOGIC BẤM ICON ĐỂ MUTE/UNMUTE ---
+    // Khởi tạo: Mute (Bắt buộc để Autoplay chạy được trên trình duyệt)
+    video.volume = 0;
+    updateVolUI(0);
+
+    // Xử lý khi kéo thanh trượt
+    volSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        video.muted = false; // Bỏ mute
+        video.volume = val / 100; // Video volume nhận giá trị 0.0 -> 1.0
+
+        if (val > 0) lastVolume = val;
+        updateVolUI(val);
+    });
+
+    // Xử lý khi bấm vào Icon Loa (Mute/Unmute Toggle)
     volIcon.addEventListener('click', () => {
-        if (player.isMuted() || volSlider.value == 0) {
-            // Đang tắt -> Bật lại mức cũ (hoặc 30 nếu chưa có)
-            let targetVol = lastVolume > 0 ? lastVolume : 30;
-            player.unMute();
-            player.setVolume(targetVol);
-            updateSliderUI(targetVol);
+        if (video.muted || video.volume === 0) {
+            // Đang tắt -> Bật lại mức cũ
+            video.muted = false;
+            let target = lastVolume > 0 ? lastVolume : 30;
+            video.volume = target / 100;
+            updateVolUI(target);
         } else {
-            // Đang bật -> Tắt (lưu lại mức hiện tại)
-            lastVolume = volSlider.value;
-            player.mute();
-            player.setVolume(0);
-            updateSliderUI(0);
+            // Đang bật -> Tắt
+            lastVolume = volSlider.value; // Lưu lại mức hiện tại
+            video.muted = true;
+            updateVolUI(0);
         }
     });
-
-    // Sự kiện kéo thanh trượt
-    volSlider.addEventListener('input', function () {
-        const volume = this.value;
-
-        // Nếu volume > 0 thì bật tiếng
-        if (volume > 0 && player.isMuted()) {
-            player.unMute();
-        } else if (volume == 0) {
-            player.mute();
-        }
-
-        // Lưu lại volume nếu khác 0 để dùng cho toggle
-        if (volume > 0) lastVolume = volume;
-
-        player.setVolume(volume);
-        updateSliderUI(volume);
-    });
-
-    // Set UI ban đầu
-    updateSliderUI(30);
-}
-
-// Inject YouTube API Script vào trang
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+});
 
 
-// --- 2. EXISTING LOGIC (TILT & SCROLL) ---
+// --- 3. SCROLL & TILT LOGIC (EXISTING) ---
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- LOGIC 3D TILT ---
     const cards = document.querySelectorAll('.js-tilt');
 
     const handleTilt = (e, card) => {
@@ -119,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- SCROLL ANIMATION ---
     const observerOptions = {
         threshold: 0.0075,
         rootMargin: "10px"
